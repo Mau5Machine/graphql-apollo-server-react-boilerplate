@@ -13,7 +13,10 @@ mongoose
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: ({ req }) => ({
+    ...req
+  })
 });
 
 server.listen().then(({ url }) => {

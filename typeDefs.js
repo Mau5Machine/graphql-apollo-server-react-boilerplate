@@ -9,5 +9,10 @@ export default gql`
 
   type Query {
     users: [User!]!
+    info: String!
+  }
+
+  type Mutation {
+    createUser(name: String!, email: String!): User!
   }
 `;
