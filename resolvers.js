@@ -2,9 +2,8 @@ import User from "./models/User";
 
 const resolvers = {
   Mutation: {
-    createUser(parent, args, ctx, info) {
-      const { name, email } = args;
-      const user = { name, email };
+    createUser(_, { name, email, username, firstName, lastName, phone, password }, ctx) {
+      const user = { name, email, username, firstName, lastName, phone, password };
       return new User(user).save();
     }
   },

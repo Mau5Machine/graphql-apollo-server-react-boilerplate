@@ -1,15 +1,12 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
+import React, { useState } from "react";
 import { withStyles } from "@material-ui/styles";
-import Icon from "@material-ui/core/Icon";
+import { useMutation } from '@apollo/react-hooks'
+import { SIGN_UP_MUTATION } from '../graphql/mutations';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
+import { Input } from "@material-ui/core";
 
 const styles = {
   container: {
@@ -19,20 +16,84 @@ const styles = {
   }
 };
 const Login = props => {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const [createUser, { data }] = useMutation(SIGN_UP_MUTATION)
   const { classes } = props;
   return (
     <React.Fragment>
       <Container maxWidth="sm" className={classes.container}>
-        <form>
+        <form onSubmit={e => {
+          e.preventDefault();
+          const variables = {
+            firstName,
+            lastName,
+            email,
+            username,
+            phone,
+            password
+          }
+          console.log(variables)
+          createUser({ variables });
+        }}>
           <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                required
+                id="firstName"
+                label="First Name"
+                value={firstName}
+                margin="normal"
+                type="text"
+                onChange={e => setFirstName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                required
+                id="lastName"
+                label="Last Name"
+                value={lastName}
+                margin="normal"
+                type="text"
+                onChange={e => setLastName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                required
+                id="email"
+                label="Email"
+                value={email}
+                margin="normal"
+                type="text"
+                onChange={e => setEmail(e.target.value)}
+              />
+            </Grid>
             <Grid item xs={12} md={6}>
               <TextField
                 required
                 id="username"
                 label="Username"
-                defaultValue=""
+                value={username}
                 margin="normal"
                 type="text"
+                onChange={e => setUsername(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                required
+                id="phone"
+                label="Phone"
+                value={phone}
+                margin="normal"
+                type="text"
+                onChange={e => setPhone(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -40,13 +101,14 @@ const Login = props => {
                 required
                 id="password"
                 label="Password"
-                defaultValue=""
+                value={password}
                 margin="normal"
                 type="password"
+                onChange={e => setPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" size="large" color="primary">
+              <Button variant="contained" size="large" type="submit" color="primary">
                 Submit
               </Button>
             </Grid>

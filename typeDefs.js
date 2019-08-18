@@ -3,8 +3,13 @@ const { gql } = require("apollo-server");
 export default gql`
   type User {
     _id: ID
-    name: String
+    firstName: String
+    lastName: String
     email: String
+    username: String
+    phone: String
+    password: String
+    createdAt: String
   }
 
   type Query {
@@ -13,6 +18,6 @@ export default gql`
   }
 
   type Mutation {
-    createUser(name: String!, email: String!): User!
+    createUser(firstName: String!, lastName:String!,email: String!, username: String!, password: String!, phone: String!): User!
   }
 `;
