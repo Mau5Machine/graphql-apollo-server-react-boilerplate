@@ -9,7 +9,10 @@ import * as serviceWorker from "./serviceWorker";
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: "http://localhost:4000"
+  uri:
+    process.env.NODE_ENV === "production"
+      ? "http://35.231.210.149:4000"
+      : "http://localhost:4000"
 });
 const client = new ApolloClient({
   cache,
