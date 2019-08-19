@@ -18,6 +18,12 @@ export default gql`
   }
 
   type Mutation {
-    createUser(firstName: String!, lastName:String!,email: String!, username: String!, password: String!, phone: String!): User!
+    createUser(firstName: String!, lastName:String!,email: String!, username: String!, password: String!, phone: String!): AuthPayLoad
+    login(username: String!, password: String!): AuthPayLoad
+  }
+
+  type AuthPayLoad {
+    token: String!
+    user: User
   }
 `;
