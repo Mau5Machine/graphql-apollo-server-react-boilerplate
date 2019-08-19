@@ -1,6 +1,5 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
-import Button from "@material-ui/core/Button";
 import { GET_USERS } from "../graphql/queries";
 
 const Home = () => {
@@ -12,12 +11,9 @@ const Home = () => {
   return (
     <div>
       <h1>Main App Page</h1>
-      <Button variant="contained" color="primary">
-        Something
-      </Button>
       <ul>
         {data.users.map(user => (
-          <li key={user.username}>{user.email}</li>
+          <li key={user._id}>{user.email}</li>
         ))}
       </ul>
     </div>

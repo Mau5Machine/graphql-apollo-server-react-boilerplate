@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useMutation } from '@apollo/react-hooks'
 import { SIGN_UP_MUTATION, LOGIN_MUTATION } from '../graphql/mutations';
 import { AUTH_TOKEN } from '../constants'
@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SnackbarMessage from './SnackbarMessage'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Typography from '@material-ui/core/Typography';
+import Context from '../context';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Login = props => {
+  const { dispatch } = useContext(Context)
   const [state, setState] = useState({
     login: true,
     open: false
@@ -45,12 +47,16 @@ const Login = props => {
 
   const saveUserData = token => {
     localStorage.setItem(AUTH_TOKEN, token)
+    dispatch({ type: "IS_LOGGED_IN", payload: true })
   }
 
   const confirm = async ({ data }) => {
-    const { token } = state.login ? data.data.login : data.data.createUser;
+    const authData = data.data
+    const { token } = state.login ? authData.login : authData.createUser;
+    const { _id } = state.login ? authData.login.user : authData.createUser.user
     saveUserData(token)
-    props.history.push('/home');
+    dispatch({ type: "CURRENT_USER", payload: _id })
+    props.history.push('/');
   }
 
   return (

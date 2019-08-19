@@ -11,6 +11,12 @@ export const SIGN_UP_MUTATION = gql`
       phone: $phone
     ) {
       token
+      user {
+        _id
+        username
+        firstName
+        lastName
+      }
     }
   }
 `
@@ -19,6 +25,12 @@ export const LOGIN_MUTATION = gql`
   mutation($username: String!, $password: String!) {
     login(username: $username, password: $password) {
       token
+      user {
+        _id
+        username
+        firstName
+        lastName
+      }
     }
-  }
+    }
 `
