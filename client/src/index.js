@@ -2,18 +2,25 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ApolloClient from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
 import { ApolloProvider } from "react-apollo";
+import { WebSocketLink } from "apollo-link-ws";
 import App from "./pages/App";
 import * as serviceWorker from "./serviceWorker";
 
+const GRAPHQL_ENDPOINT =
+  process.env.NODE_ENV === "production"
+    ? "ws://35.231.210.149:4000/graphql"
+    : "ws://localhost:4000/graphql";
+
 const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri:
-    process.env.NODE_ENV === "production"
-      ? "http://35.231.210.149:4000"
-      : "http://localhost:4000"
+
+const link = new WebSocketLink({
+  uri: GRAPHQL_ENDPOINT,
+  options: {
+    reconnect: true
+  }
 });
+
 const client = new ApolloClient({
   cache,
   link
