@@ -34,3 +34,13 @@ export const LOGIN_MUTATION = gql`
     }
     }
 `
+
+export const DELETE_USER_MUTATION = gql`
+    mutation($userId: ID!) {
+      deleteUser(userId: $userId) {
+        _id
+        username
+        email
+      }
+    }
+`

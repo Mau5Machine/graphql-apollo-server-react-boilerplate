@@ -2,9 +2,21 @@ import User from "./models/User";
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { APP_SECRET, getUserId } from './utils';
+import { AuthenticationError } from "apollo-server";
+
+const authenticated = next => (root, args, ctx, info) => {
+  if (!ctx.currentUser) {
+    throw new AuthenticationError("You must be logged in!");
+  }
+  return next(root, args, ctx, info)
+}
 
 const resolvers = {
   Mutation: {
+    deleteUser: authenticated(async (_, args, ctx) => {
+      const deletedUser = await User.findOneAndDelete({ _id: args.userId }).exec();
+      return deletedUser
+    }),
     createUser: (async (_, args, ctx) => {
       const password = await bcrypt.hash(args.password, 10);
       const user = await new User({ ...args, password }).save();

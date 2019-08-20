@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 require("dotenv").config();
 export const APP_SECRET = process.env.APP_SECRET;
+
 export const getUserId = ctx => {
   const Authorization = ctx.request.get("Authorization");
   if (Authorization) {

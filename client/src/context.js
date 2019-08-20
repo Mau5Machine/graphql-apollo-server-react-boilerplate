@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 const Context = createContext({
   currentUser: null,
-  isAuth: false
+  isAuth: localStorage.getItem('auth-token') ? true : false
 });
 
 export default Context;
